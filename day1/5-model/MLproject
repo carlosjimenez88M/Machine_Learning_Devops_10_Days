@@ -17,13 +17,8 @@ entry_points:
         type: int
         default: 42
         description: "Random seed for reproducibility"
-      sweep_count:
-        type: int
-        default: 20
-        description: "Number of sweep iterations"
 
     command: >
       python main.py --train_data_artifact {train_data_artifact} \
                       --val_size {val_size} \
-                      --random_seed {random_seed} \
-                      --sweep_count {sweep_count}
+                      --random_seed {random_seed}

@@ -95,8 +95,7 @@ def go(config: DictConfig) -> None:
                 parameters={
                     "train_data_artifact": "data_train.csv:latest",
                     "val_size": config["train"]["val_size"],
-                    "random_seed": config["train"]["random_seed"],
-                    "sweep_count": config["train"]["sweep_count"],
+                    "random_seed": config["train"]["random_seed"]
                 },
             )
 
