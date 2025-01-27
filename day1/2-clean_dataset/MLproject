@@ -1,0 +1,41 @@
+name: Clean_Dataset
+conda_env: conda.yaml
+
+entry_points:
+    main:
+        parameters:
+            input_artifact:
+                description: WandB Artifact
+                type: str
+            artifact_name:
+                description: Name of Artifact
+                type: str
+            artifact_type:
+                description: New DataBase after Clean process
+                type: str
+                default: clean_dataset
+            artifact_description:
+                description: New artifact after clean dataset process
+                type: str
+            n_splits:
+                description :  Number of samples to sampling strategies
+                type : int
+                default: 10
+            test_size:
+                description: Proportion of sampling to testing
+                type: float
+            random_state:
+                description: Rule to random state
+                type: int
+                default: 42
+
+
+
+        command: >-
+            python main.py --input_artifact {input_artifact} \
+                          --artifact_name {artifact_name} \
+                          --artifact_type {artifact_type} \
+                          --artifact_description {artifact_description}\
+                          --n_splits {n_splits}\
+                          --test_size {test_size}\
+                          --random_state {random_state}

@@ -1,0 +1,29 @@
+name: Train_Random_Forest
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      train_data_artifact:
+        type: str
+        description: "Name of the input data artifact in W&B"
+        default: "data_train.csv:latest"
+      val_size:
+        type: float
+        default: 0.2
+        description: "Proportion of validation set"
+      random_seed:
+        type: int
+        default: 42
+        description: "Random seed for reproducibility"
+      sweep_count:
+        type: int
+        default: 20
+        description: "Number of sweep iterations"
+
+    command: >
+      python main.py --train_data_artifact {train_data_artifact} \
+                      --val_size {val_size} \
+                      --random_seed {random_seed} \
+                      --sweep_count {sweep_count}

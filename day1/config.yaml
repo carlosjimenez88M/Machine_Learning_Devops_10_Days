@@ -1,0 +1,36 @@
+main:
+  project_name: random_forest_end_to_end
+  experiment_name: inference
+  execute_steps:
+    - 1-download_dataset
+    - 2-clean_dataset
+    - 3-preprocessing
+    - 4-segregate
+    - 5-model
+
+hydra:
+  run:
+    dir: .
+
+data:
+  file_url: "https://raw.githubusercontent.com/ageron/handson-ml/master/datasets/housing/housing.csv"
+  artifact_name: "raw_data.csv"
+  artifact_type: "raw_data"
+  artifact_description: "Dataset for housing prices"
+
+clean:
+  n_splits: 10
+  test_size: 0.25
+  random_state: 42
+
+segregate:
+  test_size: 0.3
+
+
+
+
+train:
+  train_data_artifact: "data_train.csv"
+  val_size: 0.2
+  random_seed: 42
+  sweep_count: 20

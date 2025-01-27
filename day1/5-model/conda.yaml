@@ -1,0 +1,11 @@
+name : model
+channels:
+  - conda-forge
+  - defaults
+dependencies :
+  - pip= 24.2
+  - pandas = 2.2.2
+  - numpy= 2.2.2
+  - scikit-learn = 1.6.1
+  - pip:
+      - wandb == 0.18.5

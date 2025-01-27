@@ -1,0 +1,11 @@
+name: download_data
+channel:
+  - conda-forge
+  - defaults
+dependencies:
+  - python= 3.10
+  - pandas = 2.0.2
+  - request
+  - pip = 24.0
+  - pip:
+      - wandb == 0.18.3

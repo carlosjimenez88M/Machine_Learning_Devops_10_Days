@@ -1,0 +1,29 @@
+name: Preprocess_Data
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      input_artifact:
+        description: Name of the input artifact to preprocess
+        type: str
+      artifact_name:
+        description: Name of the processed artifact to create
+        type: str
+      artifact_description:
+        description: Description for the processed artifact
+        type: str
+      artifact_type:
+        description: Type of the processed artifact
+        type: str
+        default: processed_data
+      output_artifact:
+        description: Path to save the preprocessed dataset
+        type: str
+
+    command: >
+      python main.py --input_artifact {input_artifact} \
+                     --artifact_name {artifact_name} \
+                     --artifact_description {artifact_description} \
+                     --artifact_type {artifact_type} \
+                     --output_artifact {output_artifact}

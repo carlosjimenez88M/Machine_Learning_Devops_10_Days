@@ -1,0 +1,11 @@
+name: download_dataset
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - requests=2.32.3
+  - pip= 24.2
+  - mlflow= 2.19.0
+  - hydra-core
+  - pip:
+    - wandb== 0.18.5
