@@ -1,0 +1,13 @@
+random_forest:
+  n_estimators: 450
+  max_depth: 44
+  min_samples_split: 2
+  min_samples_leaf: 3
+  bootstrap: true
+  max_features:  null
+  criterion: "squared_error"
+
+
+feature_engineering:
+  n_clusters: 29
+  gamma: 0.97605

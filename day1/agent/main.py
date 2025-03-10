@@ -57,7 +57,7 @@ def train_model(config=None):
         config = wandb.config
 
         logger.info('Loading data...')
-        train_data_path = wandb.use_artifact(config.train_data_artifact).file()
+        train_data_path = wandb.use_artifact(config.train_dattrain_data_artifacta_artifact).file()
         df = pd.read_csv(train_data_path, low_memory=False)
 
         logger.info("Extracting target from dataframe")
@@ -69,11 +69,11 @@ def train_model(config=None):
         y = df[target_column]
 
         logger.info("Setting up preprocessing pipeline")
-        # Define the numerical features
+
         num_features = ["longitude", "latitude", "housing_median_age", "total_rooms",
                         "total_bedrooms", "population", "households", "median_income"]
 
-        # Add cluster similarity transformation
+
         preprocessor = ColumnTransformer(
             transformers=[
                 ("num", StandardScaler(), num_features),
@@ -180,7 +180,7 @@ def go(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Train and evaluate a Random Forest model")
+    parser = argparse.ArgumentParser(description="Train and 6-evaluate a Random Forest model")
 
     parser.add_argument('--train_data_artifact',
                         type=str,

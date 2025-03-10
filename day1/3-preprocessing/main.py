@@ -52,9 +52,9 @@ def go(args):
         raise KeyError(f"The target column '{target_column}' is missing from the dataset.")
 
     y = df[target_column]
-    X = df.drop(columns=[target_column])  # Resto de las columnas
+    X = df.drop(columns=[target_column])
 
-    # Definir columnas numéricas y categóricas
+
     num_attribs = ["longitude", "latitude", "housing_median_age", "total_rooms",
                    "total_bedrooms", "population", "households", "median_income"]
     cat_attribs = ["ocean_proximity"]

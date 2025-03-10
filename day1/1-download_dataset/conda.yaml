@@ -1,5 +1,5 @@
 name: download_data
-channel:
+channels:
   - conda-forge
   - defaults
 dependencies:

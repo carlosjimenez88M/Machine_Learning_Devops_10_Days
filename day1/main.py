@@ -17,7 +17,9 @@ from omegaconf import DictConfig, OmegaConf
 # ---- Hydra Configuration ---- #
 #===============================#
 
-@hydra.main(config_path='.', config_name="config", version_base="1.1")
+@hydra.main(config_path='.',
+            config_name="config",
+            version_base="1.2")
 
 #=========================#
 # ---- Main Function ---- #
@@ -88,14 +90,27 @@ def go(config: DictConfig) -> None:
                     "test_size": config["segregate"]["test_size"],
                 },
             )
-        if "5-model" in steps_to_execute:
+        if "5-model_with_params" in steps_to_execute:
+            model_config_path = os.path.join(root_path, "5-model_with_params", "random_forest_config.yaml")
+
             _ = mlflow.run(
-                os.path.join(root_path, "5-model"),
+                os.path.join(root_path, "5-model_with_params"),
                 "main",
                 parameters={
-                    "train_data_artifact": "data_train.csv:latest",
+                    "train_data_artifact": config["train"]["train_data_artifact"],
                     "val_size": config["train"]["val_size"],
-                    "random_seed": config["train"]["random_seed"]
+                    "random_seed": config["train"]["random_seed"],
+                    "export_artifact": "model_export",
+                    "model_config": model_config_path
+                },
+            )
+        if "6-evaluate" in steps_to_execute:
+            _ = mlflow.run(
+                os.path.join(root_path, "6-evaluate"),
+                "main",
+                parameters={
+                    "model_export": "model_export:latest",
+                    "test_data": "data_test.csv:latest"
                 },
             )
 

@@ -6,7 +6,8 @@ main:
     - 2-clean_dataset
     - 3-preprocessing
     - 4-segregate
-    - 5-model
+    - 5-model_with_params
+    - 6-evaluate
 
 hydra:
   run:
@@ -30,7 +31,12 @@ segregate:
 
 
 train:
-  train_data_artifact: "data_train.csv"
+  train_data_artifact: "data_train.csv:latest"
   val_size: 0.2
   random_seed: 42
   sweep_count: 20
+
+model_config_path: "5-model_with_params/random_forest_config.yaml"
+
+
+

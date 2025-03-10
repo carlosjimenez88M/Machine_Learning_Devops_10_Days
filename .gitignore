@@ -169,3 +169,89 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# ============================
+# 🚀 Ignorar archivos de Weights & Biases (W&B)
+# ============================
+wandb/
+wandb/*
+
+# ============================
+# 🔥 Ignorar archivos de MLflow
+# ============================
+mlruns/
+mlflow-artifacts/
+mlflow.log
+**/mlflow.log
+**/mlruns/
+**/mlflow-artifacts/
+**/mlflow.db
+
+# ============================
+# 🌀 Ignorar archivos de Hydra
+# ============================
+.hydra/
+outputs/
+multirun/
+**/.hydra/
+**/outputs/
+**/multirun/
+
+# ============================
+# 📦 Ignorar dependencias y entornos virtuales
+# ============================
+__pycache__/
+*.py[cod]
+*.so
+*.pyo
+*.pyd
+*.log
+*.swp
+*.swo
+.DS_Store
+
+# ============================
+# 📂 Ignorar archivos de caché y temporales
+# ============================
+*.tmp
+*.cache
+*.out
+*.log
+*.pid
+*.bak
+*.lock
+*.npy
+*.npz
+
+# ============================
+# 📊 Ignorar artefactos y modelos guardados
+# ============================
+artifacts/
+checkpoints/
+saved_models/
+models/
+data/
+experiments/
+**/artifacts/
+**/checkpoints/
+**/saved_models/
+**/models/
+**/data/
+**/experiments/
+
+# ============================
+# 🌐 Ignorar configuraciones específicas del sistema
+# ============================
+.vscode/
+.idea/
+*.iml
+
+# ============================
+# 🚀 Ignorar archivos de ejecución y debugging
+# ============================
+*.ipynb_checkpoints
+*.prof
+*.coverage
+.coverage.*
+*.pytest_cache/
+htmlcov/
