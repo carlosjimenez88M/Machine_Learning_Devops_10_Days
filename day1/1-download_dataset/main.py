@@ -5,30 +5,50 @@
     Release Date: 2025-01-26
 '''
 
-#=====================#
+# =====================#
 # ---- Libraries ---- #
-#=====================#
+# =====================#
 
 import argparse
 import logging
 import pathlib
-import wandb
-import requests
 import tempfile
 
-#================================#
-# ---- Logger Configuration ---- #
-#================================#
+import requests
+import wandb
 
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)-15s - %(name)s - %(levelname)s - %(message)s')
+# ================================#
+# ---- Logger Configuration ---- #
+# ================================#
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)-15s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
 
-#=========================#
+# =========================#
 # ---- Main Function ---- #
-#=========================#
+# =========================#
+
 
 def go(args):
+    """
+    Downloads a file from a given URL, creates a "wandb" artifact, and logs it
+    into the "wandb" system.
+
+    The function retrieves a file from the specified `file_url` provided in the
+    arguments. It uses the "wandb" library for experiment tracking. During the
+    process, it creates and uploads an artifact that includes metadata, such as
+    the original file URL, to the configured "wandb" project.
+
+    :param args: The input arguments expected to contain the following attributes:
+        - file_url (str): The URL of the file to be downloaded.
+        - artifact_name (str): The name of the "wandb" artifact to create.
+        - artifact_type (str): The type/category of the "wandb" artifact.
+        - artifact_description (str): A description of the artifact.
+
+    :returns: None
+    """
     basename = pathlib.Path(args.file_url).name.split("?")[0].split("#")[0]
     logger.info(f"Downloading {args.file_url} ...")
     with tempfile.NamedTemporaryFile(mode='wb+') as fp:
@@ -52,6 +72,7 @@ def go(args):
             logger.info("Logging artifact")
             run.log_artifact(artifact)
             artifact.wait()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download data")

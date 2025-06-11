@@ -19,7 +19,7 @@ from omegaconf import DictConfig, OmegaConf
 
 @hydra.main(config_path='.',
             config_name="config",
-            version_base="1.2")
+            version_base="1.3")
 
 #=========================#
 # ---- Main Function ---- #

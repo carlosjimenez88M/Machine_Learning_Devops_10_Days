@@ -28,6 +28,20 @@ logger = logging.getLogger()
 #=========================#
 
 def go(args):
+    """
+    Executes a machine learning workflow using data stored as artifacts and employs a trained
+    MLflow model for predictions and evaluation. The workflow comprises several steps: downloading
+    and reading test data, extracting targets from the test dataset, loading a pre-trained model,
+    processing the test dataset, generating predictions, evaluating model performance via RMSE, and
+    creating visualizations for analysis. The generated visualizations and results are logged back
+    to the WandB dashboard.
+
+    :param args: Arguments with the following attributes:
+        - test_data (str): The name of the test dataset artifact.
+        - model_export (str): The name of the exported MLflow model artifact.
+
+    :return: None
+    """
     run = wandb.init(job_type="test")
 
     logger.info("Downloading and reading test artifact")
@@ -40,20 +54,27 @@ def go(args):
     y_test = X_test.pop("median_house_value")
 
     logger.info("Downloading and reading the exported model")
-    model_export_path = run.use_artifact(args.model_export).download()
-    model_path = os.path.join(model_export_path, "best_model.joblib")
-    model = mlflow.sklearn.load_model(model_path)
 
-    logger.info("Tranform data with Pipeline")
+    model_download_root_path = run.use_artifact(args.model_export).download()
+
+
+    model = mlflow.sklearn.load_model(model_download_root_path)
+
+
+
+    logger.info("Transform data with Pipeline")
+
+
+
     preprocessor = model["preprocessor"]
 
-    # Obtener todas las columnas utilizadas en el preprocesamiento
+
     used_columns = []
     for name, transformer, features in preprocessor.transformers:
-        if features is not None:  # Evitar transformadores vacíos
+        if features is not None:
             used_columns.extend(features)
 
-    # Asegurar que solo usamos las columnas correctas
+
     X_test_processed = preprocessor.transform(X_test[used_columns])
 
     logger.info("Making predictions")
@@ -89,7 +110,7 @@ def go(args):
     ax_residuals.set_title("Residuals Plot")
     fig_residuals.tight_layout()
 
-    # Log plots in W&B
+
     run.log({
         "prediction_vs_actual": wandb.Image(fig_scatter),
         "residuals_plot": wandb.Image(fig_residuals)
@@ -119,4 +140,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     go(args)
-

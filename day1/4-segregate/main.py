@@ -30,6 +30,23 @@ logger = logging.getLogger()
 #=========================#
 
 def go(args):
+    """
+    Splits the input data into training and testing sets, saves the splits as
+    temporary CSV files, logs them as artifacts using `wandb`, and preserves
+    the target column.
+
+    The function begins by extracting the input data artifact using WandB
+    and loading it into a DataFrame. The target column is separated, and the
+    remaining data is split into training and testing sets proportionally
+    based on the specified test size. The resulting splits are saved as CSV
+    files in a temporary directory. Each split is then logged as a separate
+    artifact with the metadata provided in the arguments.
+
+    :param args: The command-line arguments containing parameters for running
+        the train/test split process.
+    :type args: argparse.Namespace
+    :return: None
+    """
     logger.info("Initializing train/test split...")
     run = wandb.init(job_type="split_data")
     artifact = run.use_artifact(args.input_artifact)

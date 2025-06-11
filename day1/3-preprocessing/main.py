@@ -38,6 +38,27 @@ logger = logging.getLogger()
 #=========================#
 
 def go(args):
+    """
+    Preprocesses a dataset by applying various transformations, including missing data imputation,
+    categorical feature encoding, feature scaling, and a custom clustering-based transformation
+    for geographical data. The processed dataset is saved and logged as an artifact.
+
+    :param args: argparse.Namespace
+        Command-line arguments containing the following attributes:
+            input_artifact (str): The artifact name of the input dataset.
+            output_artifact (str): The file path where the processed dataset will be saved.
+            artifact_name (str): The name of the processed artifact to be logged in Weights & Biases.
+            artifact_type (str): The type of the processed artifact (e.g., dataset, table).
+            artifact_description (str): A brief description of the processed artifact.
+
+    :raises KeyError:
+        If the target column named "median_house_value" is missing from the input dataset.
+
+    :raises Exception:
+        If any other unhandled error occurs during the pre-processing or artifact logging.
+
+    :return: None
+    """
     logger.info("Initializing Preprocessing Steps...")
     run = wandb.init(job_type="preprocess_data")
     logger.info('Downloading dataset...')

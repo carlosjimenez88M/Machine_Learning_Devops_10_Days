@@ -30,6 +30,25 @@ logger = logging.getLogger()
 #=========================#
 
 def go(args):
+    """
+    Executes the data cleaning and preprocessing pipeline. This function initializes
+    a Weights & Biases (W&B) run to download an input dataset artifact, processes
+    the dataset to handle missing values, stratifies it based on income categories,
+    and combines the stratified train-test split into a single dataset. The processed
+    data is then saved, logged back as an artifact in W&B, and the temporary file
+    is removed.
+
+    :param args: Arguments necessary for the function, which include:
+        - input_artifact (str): Name of the input artifact to download from W&B.
+        - n_splits (int): Number of splits for `StratifiedShuffleSplit`.
+        - test_size (float): Proportion of the dataset to include in the test split.
+        - random_state (int): Random seed for shuffling and stratification.
+        - artifact_name (str): Name of the output artifact to be logged into W&B.
+        - artifact_type (str): Type of the artifact to be tagged in W&B.
+        - artifact_description (str): Description of the processed artifact to log.
+
+    :return: None
+    """
     logger.info('Initializing clean data process...')
     run = wandb.init(job_type="clean_data")
     logger.info('Downloading dataset...')
@@ -37,11 +56,11 @@ def go(args):
     artifact_path = artifact.file()
     df = pd.read_csv(artifact_path)
 
-    # Analyze Missing Values
+
     logger.info('Checking for missing values...')
     logger.info(f"Missing values per column:\n{df.isnull().sum()}")
 
-    # Stratify dataset
+
     logger.info("Creating income categories for stratification...")
     df["income_cat"] = pd.cut(df["median_income"],
                                 bins=[0., 1.5, 3.0, 4.5, 6., np.inf],
@@ -55,18 +74,18 @@ def go(args):
         strat_test_set = df.iloc[test_index]
         break
 
-    # Drop stratification column and combine datasets
+
     for set_ in (strat_train_set, strat_test_set):
         set_.drop("income_cat", axis=1, inplace=True)
     combined_data = pd.concat([strat_train_set, strat_test_set], ignore_index=True)
     combined_data = combined_data.sample(frac=1, random_state=args.random_state).reset_index(drop=True)
 
-    # Save combined dataset
+
     logger.info("Saving combined dataset...")
     combined_output_path = "combined_data.csv"
     combined_data.to_csv(combined_output_path, index=False)
 
-    # Log artifact to W&B
+
     artifact = wandb.Artifact(
         name=args.artifact_name,
         type=args.artifact_type,
@@ -77,7 +96,7 @@ def go(args):
     logger.info("Logging artifact")
     run.log_artifact(artifact)
 
-    # Clean up
+
     os.remove(combined_output_path)
     logger.info("Clean data process completed.")
 
