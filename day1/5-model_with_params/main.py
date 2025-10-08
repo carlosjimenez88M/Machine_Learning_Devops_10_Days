@@ -13,7 +13,7 @@ import argparse
 import wandb
 import pandas as pd
 import numpy as np
-import joblib
+import joblib 
 import mlflow
 import tempfile
 import yaml
@@ -21,6 +21,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from mlflow.models import infer_signature
+
+
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
@@ -42,28 +44,6 @@ logger = logging.getLogger()
 #=====================#
 
 def go(args):
-    """
-    Execute the training pipeline for a Random Forest model. The function:
-    - Loads, processes, and splits data.
-    - Builds a preprocessing pipeline to handle numeric and categorical features.
-    - Trains the model using the constructed pipeline.
-    - Evaluates the model using RMSE (Root Mean Squared Error).
-    - Exports the trained pipeline in MLflow format and registers it with Weights & Biases.
-
-    This function relies heavily on external libraries like `wandb`, `pandas`, and
-    `sklearn`. Additionally, paths, configurations, and parameters are accepted
-    through the `args` argument, which must be appropriately structured.
-
-    :param args: Namespace-type or similar object that contains configurations and
-        parameters required for execution. It must include:
-        - `train_data_artifact` (str): The artifact name for the training dataset.
-        - `model_config` (str): Path to the model configuration YAML file.
-        - `val_size` (float): Proportion of the dataset to include in the validation split.
-        - `random_seed` (int): Random seed for reproducibility.
-        - `export_artifact` (str): Name for the exported model artifact.
-
-    :return: None
-    """
     run = wandb.init(job_type="train")
 
 
@@ -90,13 +70,11 @@ def go(args):
         X, y, test_size=args.val_size, random_state=args.random_seed
     )
 
-
+    # --- INICIO DE LA CONSTRUCCIÓN DE LA PIPELINE ---
     logger.info("Building preprocessing pipeline and model pipeline")
-
 
     numeric_features = X.select_dtypes(include=np.number).columns.tolist()
     categorical_features = X.select_dtypes(include='object').columns.tolist()
-
 
     preprocessor = ColumnTransformer(
         transformers=[
@@ -106,23 +84,23 @@ def go(args):
         remainder='passthrough'
     )
 
-
+    
     rf_model = RandomForestRegressor(**model_config["random_forest"])
 
-
+    
     full_pipeline = Pipeline(steps=[
         ('preprocessor', preprocessor),
         ('random_forest', rf_model)
     ])
-
+    
 
 
     logger.info("Training the full pipeline")
-    full_pipeline.fit(X_train, y_train)
+    full_pipeline.fit(X_train, y_train) 
 
 
     logger.info("Evaluating the model")
-    y_pred = full_pipeline.predict(X_val)
+    y_pred = full_pipeline.predict(X_val) 
     rmse = np.sqrt(mean_squared_error(y_val, y_pred))
     run.summary["rmse"] = rmse
 
@@ -136,7 +114,7 @@ def go(args):
 
         signature = infer_signature(X_val, y_pred)
         mlflow.sklearn.save_model(
-            sk_model=full_pipeline,
+            sk_model=full_pipeline, 
             path=mlflow_model_local_path,
             serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
             signature=signature,
@@ -148,7 +126,7 @@ def go(args):
             type="model",
             description=f"Random Forest Pipeline (MLflow format) with RMSE={rmse:.2f}",
         )
-        artifact.add_dir(mlflow_model_local_path)
+        artifact.add_dir(mlflow_model_local_path) # <-- Añade el directorio completo de la Pipeline
         run.log_artifact(artifact)
         logger.info("Model registered in W&B as MLflow structure.")
 

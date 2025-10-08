@@ -1,0 +1,12 @@
+name: mnist_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pip
+  - pandas
+  - numpy
+  - scikit-learn
+  - pip:
+      - wandb
+      - mlflow

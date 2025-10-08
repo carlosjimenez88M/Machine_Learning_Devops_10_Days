@@ -1,0 +1,42 @@
+name: split_data
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      input_artifact:
+        type: str
+        description: "Input artifact name from W&B (e.g., cleaned_data.csv:latest)"
+      train_artifact_name:
+        type: str
+        default: "train_data.csv"
+        description: "Name of the train artifact to be logged"
+      test_artifact_name:
+        type: str
+        default: "test_data.csv"
+        description: "Name of the test artifact to be logged"
+      artifact_type:
+        type: str
+        default: "split_data"
+        description: "Type of the artifacts"
+      test_size:
+        type: float
+        default: 0.2
+        description: "Proportion of dataset for test set"
+      random_state:
+        type: int
+        default: 42
+        description: "Random state for reproducibility"
+      stratify_by:
+        type: str
+        default: ""
+        description: "Column name to stratify split by (empty string for None)"
+
+    command: >-
+      python main.py
+      --input_artifact {input_artifact}
+      --train_artifact {train_artifact_name}
+      --test_artifact {test_artifact_name}
+      --artifact_type {artifact_type}
+      --artifact_description "Split dataset for training and testing"

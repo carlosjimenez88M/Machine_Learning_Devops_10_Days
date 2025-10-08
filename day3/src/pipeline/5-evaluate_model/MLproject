@@ -1,0 +1,19 @@
+name: train_model
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      test_data:
+        type: str
+        description: "Input artifact name from W&B (e.g., test_data.csv:latest)"
+      model_export:
+        type: str
+        description: "Input artifact name from W&B (e.g., random_forest_model:latest)"
+
+     
+
+    command: >-
+      python main.py
+      --test_data {test_data}
+      --model_export {model_export}

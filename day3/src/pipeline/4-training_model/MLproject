@@ -1,0 +1,64 @@
+name: train_model
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      input_artifact:
+        type: str
+        description: "Input artifact name from W&B (e.g., train_data.csv:latest)"
+      output_artifact:
+        type: str
+        default: "random_forest_model"
+        description: "Name of the output model artifact"
+      output_type:
+        type: str
+        default: "model"
+        description: "Type of the output artifact"
+      output_description:
+        type: str
+        default: "Trained Random Forest model"
+        description: "Description of the output artifact"
+      n_estimators:
+        type: int
+        default: 185
+        description: "Number of trees in the forest"
+      max_depth:
+        type: int
+        default: 36
+        description: "Maximum depth of the tree"
+      min_samples_split:
+        type: int
+        default: 4
+        description: "Minimum number of samples required to split an internal node"
+      min_samples_leaf:
+        type: int
+        default: 8
+        description: "Minimum number of samples required to be at a leaf node"
+      max_features:
+        type: str
+        default: "sqrt"
+        description: "Number of features to consider when looking for the best split"
+      bootstrap:
+        type: bool
+        default: false
+        description: "Whether bootstrap samples are used when building trees"
+      random_state:
+        type: int
+        default: 42
+        description: "Random seed for reproducibility"
+
+    command: >-
+      python main.py
+      --input_artifact {input_artifact}
+      --output_artifact {output_artifact}
+      --output_type {output_type}
+      --output_description "{output_description}"
+      --n_estimators {n_estimators}
+      --max_depth {max_depth}
+      --min_samples_split {min_samples_split}
+      --min_samples_leaf {min_samples_leaf}
+      --max_features {max_features}
+      --bootstrap {bootstrap}
+      --random_state {random_state}

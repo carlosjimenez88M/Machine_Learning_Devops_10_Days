@@ -1,0 +1,56 @@
+main:
+  project_name: Post-COVID
+  experiment_name: experiments_designs
+  execute_steps:
+    - 1-load_dataset
+    - 2-preprocessing_dataset
+    - 3-split_dataset
+    - 4-training_model
+    - 5-evaluate_model
+
+hydra:
+  run:
+    dir: .
+  job:
+    chdir: false
+
+data:
+  file: "Post-COVID_Conditions.csv"
+  artifact_name: "raw_data.csv"
+  artifact_type: "raw_data"
+  artifact_description: "Dataset for Post COVID conditions from Kaggle"
+  kaggle_dataset: "ylmzasel/post-covid-conditions-dataset"
+
+preprocessing:
+  input_artifact: "danieljimenez88m-carlosdanieljimenez-com/Post-COVID/raw_data.csv:latest"
+  output_artifact: "cleaned_data.csv"
+  output_artifact_name: "cleaned_data.csv"
+  output_artifact_type: "clean_data"
+  output_artifact_description: "Cleaned and preprocessed dataset"
+
+split:
+  input_artifact: "danieljimenez88m-carlosdanieljimenez-com/Post-COVID/cleaned_data.csv:latest"
+  train_artifact_name: "train_data.csv"
+  test_artifact_name: "test_data.csv"
+  artifact_type: "split_data"
+  artifact_description: "Split dataset for training and testing"
+  random_state: 42
+
+training:
+  input_artifact: "danieljimenez88m-carlosdanieljimenez-com/Post-COVID/train_data.csv:latest"
+  output_artifact: "random_forest_model"
+  output_type: "model"
+  output_description: "Trained Random Forest model for Post-COVID predictions"
+  n_estimators: 185
+  max_depth: 36
+  min_samples_split: 4
+  min_samples_leaf: 8
+  max_features: "sqrt"
+  bootstrap: false
+  random_state: 42
+
+evaluate:
+  test_data: "danieljimenez88m-carlosdanieljimenez-com/Post-COVID/test_data.csv:latest"
+  model_export: "danieljimenez88m-carlosdanieljimenez-com/Post-COVID/random_forest_model:latest"
+
+

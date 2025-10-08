@@ -1,0 +1,28 @@
+# Python 3.11 compatible requirements for Post-COVID API
+
+# Web Framework
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+
+# Data Validation
+pydantic==2.9.0
+
+# Data Processing
+pandas==2.2.0
+numpy==1.26.4
+pyarrow==14.0.2
+
+# Machine Learning
+scikit-learn==1.4.0
+joblib==1.3.2
+
+# W&B for model artifacts
+wandb==0.16.3
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.25.2
+
+# Local package
+-e ../loggers_configuration

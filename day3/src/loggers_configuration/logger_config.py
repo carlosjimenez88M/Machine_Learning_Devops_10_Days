@@ -1,6 +1,6 @@
 '''
     Colored Logger Configuration
-    Release Date: 2025-06-11
+    Release Date: 2025-10-07
 '''
 
 import logging
@@ -119,15 +119,12 @@ def setup_file_logger(
     logger = logging.getLogger(f"{name}_file")
     logger.setLevel(getattr(logging, level.upper()))
 
-    # Remove existing handlers
     if logger.handlers:
         logger.handlers.clear()
 
-    # Create file handler
     file_handler = logging.FileHandler(log_file)
     file_handler.setLevel(getattr(logging, level.upper()))
 
-    # Create simple formatter for file (no colors)
     file_formatter = logging.Formatter(
         "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S"

@@ -1,0 +1,14 @@
+name: download_data
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pandas
+  - pip
+  - pip:
+    - kagglehub
+    - wandb
+    - pydantic==2.10.5
+    - pydantic-core==2.27.2
+    - -e ../../loggers_configuration

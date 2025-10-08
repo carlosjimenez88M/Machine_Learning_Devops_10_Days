@@ -1,0 +1,39 @@
+name: download_raw_data
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      file:
+        type: str
+        default: "Post-COVID_Conditions.csv"
+        description: "Path to the local CSV file to be uploaded as an artifact."
+      artifact_name:
+        type: str
+        description: "W&B artifact."
+      artifact_type:
+        type: str
+        default: "raw_data"
+        description: "Type of the artifact (e.g., raw_data)."
+      artifact_description:
+        type: str
+        default: "Raw dataset of Post-COVID conditions from Kaggle"
+        description: "Description for the artifact."
+      artifact_metadata:
+        type: str
+        default: ""
+        description: "Metadata of the artifact in key1=value1,key2=value2 format"
+      kaggle_dataset:
+        type: str
+        default: "programmerrdai/post-covid-conditions"
+        description: "Kaggle dataset identifier"
+
+    command: >-
+      python main.py
+      --file {file}
+      --artifact_name {artifact_name}
+      --artifact_type {artifact_type}
+      --artifact_description "{artifact_description}"
+      --artifact_metadata "{artifact_metadata}"
+      --kaggle_dataset {kaggle_dataset}

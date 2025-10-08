@@ -2,7 +2,7 @@
             Step #1 Download Dataset
     Description: Program for generating the download
     of databases for the pipeline with Weights and Biases.
-    Release Date: 2025-01-26
+    Release Date: 2025-06-11
 '''
 
 # =====================#
@@ -32,23 +32,6 @@ logger = logging.getLogger()
 
 
 def go(args):
-    """
-    Downloads a file from a given URL, creates a "wandb" artifact, and logs it
-    into the "wandb" system.
-
-    The function retrieves a file from the specified `file_url` provided in the
-    arguments. It uses the "wandb" library for experiment tracking. During the
-    process, it creates and uploads an artifact that includes metadata, such as
-    the original file URL, to the configured "wandb" project.
-
-    :param args: The input arguments expected to contain the following attributes:
-        - file_url (str): The URL of the file to be downloaded.
-        - artifact_name (str): The name of the "wandb" artifact to create.
-        - artifact_type (str): The type/category of the "wandb" artifact.
-        - artifact_description (str): A description of the artifact.
-
-    :returns: None
-    """
     basename = pathlib.Path(args.file_url).name.split("?")[0].split("#")[0]
     logger.info(f"Downloading {args.file_url} ...")
     with tempfile.NamedTemporaryFile(mode='wb+') as fp:
